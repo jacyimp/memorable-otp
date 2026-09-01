@@ -1,5 +1,7 @@
 # Memorable OTP
 
+![Memorable OTP](.github/assets/memorable-otp-banner.png)
+
 Human-friendly numeric verification codes for PHP, while keeping the pool of possible codes as large as practical.
 
 Instead of:
