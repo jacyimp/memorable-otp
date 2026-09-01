@@ -1,28 +1,6 @@
 # Memorable OTP
 
-Human-friendly numeric verification codes for PHP, while keeping the pool of possible codes as large as practical.
-
-Instead of:
-
-```text
-583917
-472861
-936504
-```
-
-generate codes more like:
-
-```text
-121212
-112233
-123456
-123321
-010203
-81818
-10020
-```
-
-Candidates are generated with cryptographically secure randomness and filtered for readability.
+Human-friendly numeric verification codes for PHP, while keeping as many possible codes as practical.
 
 ## Install
 
@@ -56,7 +34,15 @@ MemorableOtp::superEasy(6); // e.g. 010203
 MemorableOtp::uberEasy(6);  // e.g. 121212
 ```
 
-Higher levels filter more aggressively for readable structure.
+| Preset        | Possible codes kept | Entropy loss* |
+| ------------- | ------------------: | ------------: |
+| `readable()`  |           up to 50% |     ≥ 1.0 bit |
+| `easy()`      |           up to 30% |    ≥ 1.7 bits |
+| `veryEasy()`  |           up to 20% |    ≥ 2.3 bits |
+| `superEasy()` |           up to 15% |    ≥ 2.7 bits |
+| `uberEasy()`  |           up to 10% |    ≥ 3.3 bits |
+
+* Actual values vary slightly by code length.
 
 ## What it recognizes
 
@@ -71,15 +57,11 @@ Higher levels filter more aggressively for readable structure.
 10020    round-number structure
 ```
 
-Digit diversity and transcription risk are also considered.
-
-For example:
+Long identical runs are penalized to reduce transcription mistakes:
 
 ```text
 111111
 ```
-
-is simple, but penalized because long identical runs are easier to miscount.
 
 ## Explicit preset
 
@@ -90,38 +72,20 @@ use JacyImp\MemorableOtp\ReadabilityPreset;
 $code = MemorableOtp::generate(
     length: 7,
     preset: ReadabilityPreset::VeryEasy,
-);
+); // e.g. 4015642
 ```
 
 Equivalent to:
 
 ```php
-$code = MemorableOtp::veryEasy(7);
+$code = MemorableOtp::veryEasy(7); // e.g. 4015642
 ```
 
 ## Security
 
-Readability comes from rejecting some otherwise valid random codes.
+Candidates are generated with cryptographically secure randomness and filtered using rejection sampling.
 
-Memorable OTP uses rejection sampling:
-
-```text
-secure random candidate
-          ↓
-   readability score
-          ↓
-   meets threshold?
-      ↙       ↘
-    no         yes
-    ↓           ↓
-  retry       return
-```
-
-The first candidate that passes is returned.
-
-Accepted candidates are not ranked against each other, so every code accepted by a preset remains equally likely to be returned.
-
-Security estimates can be inspected directly:
+The first candidate that meets the selected readability threshold is returned. Accepted codes are not ranked against each other.
 
 ```php
 use JacyImp\MemorableOtp\MemorableOtp;
@@ -137,13 +101,6 @@ $security->acceptedSearchSpace();
 $security->entropyBits();
 $security->entropyLossBits();
 $security->exact;
-```
-
-For stricter presets, increasing the length helps compensate for the reduced pool of accepted codes.
-
-```php
-MemorableOtp::uberEasy(6); // e.g. 121212
-MemorableOtp::uberEasy(7); // e.g. 1212121
 ```
 
 Normal OTP protections still apply: expiration, attempt limits, rate limiting, one-time use, secure storage, and secure delivery.
