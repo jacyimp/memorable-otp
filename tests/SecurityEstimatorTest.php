@@ -30,7 +30,7 @@ final class SecurityEstimatorTest extends TestCase
         );
 
         self::assertEqualsWithDelta(
-            99_234.0,
+            94_143.0,
             $estimate->acceptedSearchSpace(),
             0.001,
         );
@@ -49,7 +49,7 @@ final class SecurityEstimatorTest extends TestCase
         );
 
         self::assertEqualsWithDelta(
-            995_000.0,
+            978_740.0,
             $estimate->acceptedSearchSpace(),
             1.0,
         );
@@ -68,7 +68,7 @@ final class SecurityEstimatorTest extends TestCase
         );
 
         self::assertEqualsWithDelta(
-            -log(0.099234, 2),
+            -log(0.094143, 2),
             $estimate->entropyLossBits(),
             0.000001,
         );

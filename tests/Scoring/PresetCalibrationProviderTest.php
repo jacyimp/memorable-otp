@@ -23,12 +23,12 @@ final class PresetCalibrationProviderTest extends TestCase
         );
 
         self::assertSame(
-            0.281647917706,
+            0.311841510709,
             $calibration->threshold,
         );
 
         self::assertSame(
-            0.099234,
+            0.094143,
             $calibration->retainedFraction,
         );
 

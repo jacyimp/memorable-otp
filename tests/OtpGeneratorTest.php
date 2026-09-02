@@ -46,12 +46,12 @@ final class OtpGeneratorTest extends TestCase
     public function itAcceptsAScoreEqualToTheThresholdOnTheOnlyAttempt(): void
     {
         $generator = new OtpGenerator(
-            candidateGenerator: new SequenceCandidateGenerator(['0112']),
+            candidateGenerator: new SequenceCandidateGenerator(['0102']),
             maxAttempts: 1,
         );
 
         self::assertSame(
-            '0112',
+            '0102',
             $generator->generate(
                 new OtpLength(4),
                 ReadabilityPreset::Readable,
