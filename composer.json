@@ -29,6 +29,10 @@
             "@php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=.phpunit.cache/coverage.xml --coverage-text --only-summary-for-coverage-text",
             "@php tools/check-coverage.php .phpunit.cache/coverage.xml"
         ],
+        "mutation": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -d xdebug.mode=coverage vendor/bin/infection --no-progress"
+        ],
         "score": "php tools/score.php",
         "calibrate": "php tools/calibrate.php",
         "check": [
@@ -53,11 +57,13 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
-        "phpunit/phpunit": "^11.5.50"
+        "phpunit/phpunit": "^11.5.50",
+        "infection/infection": "^0.31.9"
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "infection/extension-installer": true
         }
     }
 }

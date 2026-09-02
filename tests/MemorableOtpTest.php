@@ -66,10 +66,20 @@ final class MemorableOtpTest extends TestCase
     #[Test]
     public function itDefaultsToSixDigits(): void
     {
-        self::assertMatchesRegularExpression(
-            '/^\d{6}$/',
+        $codes = [
+            MemorableOtp::generate(),
             MemorableOtp::readable(),
-        );
+            MemorableOtp::easy(),
+            MemorableOtp::veryEasy(),
+            MemorableOtp::superEasy(),
+            MemorableOtp::uberEasy(),
+        ];
+
+        foreach ($codes as $code) {
+            self::assertMatchesRegularExpression('/^\d{6}$/', $code);
+        }
+
+        self::assertSame(1_000_000.0, MemorableOtp::security()->rawSearchSpace());
     }
 
     #[Test]

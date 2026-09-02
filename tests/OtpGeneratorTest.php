@@ -9,6 +9,12 @@ use JacyImp\MemorableOtp\Exception\OtpGenerationFailedException;
 use JacyImp\MemorableOtp\OtpGenerator;
 use JacyImp\MemorableOtp\OtpLength;
 use JacyImp\MemorableOtp\ReadabilityPreset;
+use JacyImp\MemorableOtp\Scoring\MinimumDescriptionCostCalculator;
+use JacyImp\MemorableOtp\Scoring\PresetCalibrationProvider;
+use JacyImp\MemorableOtp\Scoring\ReadabilityAnalyzer;
+use JacyImp\MemorableOtp\Scoring\ReadabilityScorer;
+use JacyImp\MemorableOtp\Scoring\StructureCostCalculator;
+use JacyImp\MemorableOtp\Scoring\TranscriptionRiskCalculator;
 use JacyImp\MemorableOtp\Tests\Generation\SequenceCandidateGenerator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -17,6 +23,42 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(OtpGenerator::class)]
 final class OtpGeneratorTest extends TestCase
 {
+    #[Test]
+    public function itUsesItsDocumentedDefaultsAndInjectedCollaborators(): void
+    {
+        $scorer = new ReadabilityScorer(
+            new ReadabilityAnalyzer(),
+            new MinimumDescriptionCostCalculator(new StructureCostCalculator()),
+            new TranscriptionRiskCalculator(),
+        );
+        $calibrations = new PresetCalibrationProvider();
+        $generator = new OtpGenerator(
+            scorer: $scorer,
+            calibrationProvider: $calibrations,
+        );
+
+        self::assertSame(1000, $this->property($generator, 'maxAttempts'));
+        self::assertSame($scorer, $this->property($generator, 'scorer'));
+        self::assertSame($calibrations, $this->property($generator, 'calibrationProvider'));
+    }
+
+    #[Test]
+    public function itAcceptsAScoreEqualToTheThresholdOnTheOnlyAttempt(): void
+    {
+        $generator = new OtpGenerator(
+            candidateGenerator: new SequenceCandidateGenerator(['0112']),
+            maxAttempts: 1,
+        );
+
+        self::assertSame(
+            '0112',
+            $generator->generate(
+                new OtpLength(4),
+                ReadabilityPreset::Readable,
+            )->value,
+        );
+    }
+
     #[Test]
     public function itRejectsCandidatesUntilOneMeetsThePresetThreshold(): void
     {
@@ -94,5 +136,12 @@ final class OtpGeneratorTest extends TestCase
         new OtpGenerator(
             maxAttempts: 0,
         );
+    }
+
+    private function property(OtpGenerator $generator, string $name): mixed
+    {
+        $property = new \ReflectionProperty($generator, $name);
+
+        return $property->getValue($generator);
     }
 }

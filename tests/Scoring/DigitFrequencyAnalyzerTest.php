@@ -30,6 +30,7 @@ final class DigitFrequencyAnalyzerTest extends TestCase
         );
 
         self::assertSame($expectedFrequencies, $profile->frequencies);
+        self::assertSame(strlen($code), $profile->length());
         self::assertSame($expectedUniqueDigits, $profile->uniqueDigits());
         self::assertSame($expectedHighestFrequency, $profile->highestFrequency());
     }

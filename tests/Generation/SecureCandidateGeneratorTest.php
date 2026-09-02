@@ -14,6 +14,26 @@ use PHPUnit\Framework\TestCase;
 final class SecureCandidateGeneratorTest extends TestCase
 {
     #[Test]
+    public function itRequestsEveryDecimalDigitFromTheSecureSource(): void
+    {
+        $calls = [];
+        $digits = [0, 9, 0, 9];
+        $generator = new SecureCandidateGenerator(
+            static function (int $minimum, int $maximum) use (&$calls, &$digits): int {
+                $calls[] = [$minimum, $maximum];
+
+                return array_shift($digits) ?? 0;
+            },
+        );
+
+        self::assertSame('0909', $generator->generate(new OtpLength(4))->value);
+        self::assertSame(
+            [[0, 9], [0, 9], [0, 9], [0, 9]],
+            $calls,
+        );
+    }
+
+    #[Test]
     public function itGeneratesCodeWithRequestedLength(): void
     {
         $generator = new SecureCandidateGenerator();

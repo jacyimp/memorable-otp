@@ -59,15 +59,12 @@ final readonly class StructureCostCalculator
             default => 1.0,
         };
 
-        return max(
-            1.0,
-            $number->length() - $discount,
-        );
+        return $number->length() - $discount;
     }
 
     public function forMirror(Mirror $mirror): float
     {
-        $rememberedDigits = (int) ceil($mirror->length() / 2);
+        $rememberedDigits = ceil($mirror->length() / 2);
 
         return $rememberedDigits + 0.5;
     }
@@ -77,7 +74,6 @@ final readonly class StructureCostCalculator
         return match (abs($step)) {
             1 => 0.25,
             2, 5 => 0.5,
-            3 => 1.0,
             default => 1.0,
         };
     }

@@ -1,0 +1,146 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "threads": 4,
+    "logs": {
+        "text": ".phpunit.cache/infection.log"
+    },
+    "mutators": {
+        "@default": true,
+
+        // These loop-bound mutations only add iterations that cannot emit a structure.
+        "DecrementInteger": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\ChunkSequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\MirrorAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\PeriodicPatternAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RepeatedChunkAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RoundNumberAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RunAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\SequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\TranscriptionRiskCalculator::runRisk"
+            ]
+        },
+        "IncrementInteger": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\DigitFrequencyProfile::normalizedEntropy",
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::groupDigit"
+            ]
+        },
+        "CastInt": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\DigitFrequencyAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\SequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\SequenceAnalyzer::continuesPreviousSequence"
+            ]
+        },
+        "LessThan": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\ChunkSequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\ChunkSequenceAnalyzer::continuesPreviousSequence",
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\MinimumDescriptionCostCalculator::describeFrom",
+                "JacyImp\\MemorableOtp\\Scoring\\PeriodicPatternAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RepeatedChunkAnalyzer::analyze"
+            ]
+        },
+        "Minus": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\ChunkSequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\ChunkSequenceAnalyzer::continuesPreviousSequence",
+                "JacyImp\\MemorableOtp\\Scoring\\MirrorAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\PeriodicPatternAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RepeatedChunkAnalyzer::analyze"
+            ]
+        },
+
+        // Changing continue to break is equivalent once the containing/maximal rule is already found.
+        "Continue_": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\ChunkSequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\MinimumDescriptionCostCalculator::describeFrom",
+                "JacyImp\\MemorableOtp\\Scoring\\PeriodicPatternAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RepeatedChunkAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RepeatedChunkAnalyzer::isItselfRepeated"
+            ]
+        },
+
+        // Containment alternatives below cannot change the normalized maximal result.
+        "LogicalAnd": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::isContained"
+            ]
+        },
+        "Plus": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::isContained",
+                "JacyImp\\MemorableOtp\\Scoring\\RepeatedChunkAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RoundNumberAnalyzer::analyze"
+            ]
+        },
+
+        // These mutations affect only equivalent internal representation or redundant traversal.
+        "Division": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\MinimumDescriptionCostCalculator::describeFrom"
+            ]
+        },
+        "GreaterThan": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\MirrorAnalyzer::onlyMaximal"
+            ]
+        },
+        "LessThanOrEqualTo": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::isContained",
+                "JacyImp\\MemorableOtp\\Scoring\\PeriodicPatternAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\TranscriptionRiskCalculator::repeatedChunkRisk",
+                "JacyImp\\MemorableOtp\\Scoring\\TranscriptionRiskCalculator::runRisk"
+            ]
+        },
+        "Break_": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\RoundNumberAnalyzer::analyze",
+                "JacyImp\\MemorableOtp\\Scoring\\RoundNumberAnalyzer::trailingZeroes"
+            ]
+        },
+        "GreaterThanOrEqualTo": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\RoundNumberAnalyzer::trailingZeroes"
+            ]
+        },
+        "ArrayOneItem": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\GroupedSequenceAnalyzer::analyze"
+            ]
+        },
+        "ReturnRemoval": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\MinimumDescriptionCostCalculator::describeFrom"
+            ]
+        },
+        "Foreach_": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\MinimumDescriptionCostCalculator::describeFrom"
+            ]
+        },
+        "RoundingFamily": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\StructureCostCalculator::forMirror"
+            ]
+        },
+        "MatchArmRemoval": {
+            "ignore": [
+                "JacyImp\\MemorableOtp\\Scoring\\TranscriptionRiskCalculator::runRisk"
+            ]
+        }
+    },
+    "minMsi": 100,
+    "minCoveredMsi": 100
+}

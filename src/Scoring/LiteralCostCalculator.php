@@ -14,10 +14,6 @@ final readonly class LiteralCostCalculator
 
         $trailingZeroes = strlen($literal) - strlen(rtrim($literal, '0'));
 
-        if ($trailingZeroes === 0) {
-            return (float) strlen($literal);
-        }
-
         return strlen($literal) - $trailingZeroes
             + min(0.5, $trailingZeroes * 0.25);
     }
