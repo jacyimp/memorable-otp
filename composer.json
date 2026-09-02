@@ -25,6 +25,10 @@
         "cs:fix": "phpcbf",
         "analyse": "phpstan analyse",
         "test": "phpunit",
+        "coverage": [
+            "@php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-clover=.phpunit.cache/coverage.xml --coverage-text --only-summary-for-coverage-text",
+            "@php tools/check-coverage.php .phpunit.cache/coverage.xml"
+        ],
         "score": "php tools/score.php",
         "calibrate": "php tools/calibrate.php",
         "check": [

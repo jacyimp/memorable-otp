@@ -112,10 +112,6 @@ final readonly class GroupedSequenceAnalyzer
     ): ?int {
         $group = substr($value, $offset, $length);
 
-        if (strlen($group) !== $length) {
-            return null;
-        }
-
         if (strspn($group, $group[0]) !== $length) {
             return null;
         }

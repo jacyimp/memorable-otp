@@ -42,10 +42,6 @@ final readonly class RoundNumberAnalyzer
 
                 $trailingZeroes = $this->trailingZeroes($candidate);
 
-                if ($trailingZeroes === 0) {
-                    continue;
-                }
-
                 $numbers[] = new RoundNumber(
                     value: $candidate,
                     offset: $offset,

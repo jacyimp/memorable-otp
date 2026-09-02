@@ -33,10 +33,6 @@ final readonly class ChunkSequenceAnalyzer
                     length: $chunkLength,
                 );
 
-                if ($first === null || $second === null) {
-                    continue;
-                }
-
                 $step = $second - $first;
 
                 if ($step === 0) {
@@ -71,7 +67,7 @@ final readonly class ChunkSequenceAnalyzer
                         length: $chunkLength,
                     );
 
-                    if ($current === null || $current - $previous !== $step) {
+                    if ($current - $previous !== $step) {
                         break;
                     }
 
@@ -121,14 +117,8 @@ final readonly class ChunkSequenceAnalyzer
         string $value,
         int $offset,
         int $length,
-    ): ?int {
-        $chunk = substr($value, $offset, $length);
-
-        if (strlen($chunk) !== $length) {
-            return null;
-        }
-
-        return (int) $chunk;
+    ): int {
+        return (int) substr($value, $offset, $length);
     }
 
     private function continuesPreviousSequence(
@@ -150,7 +140,6 @@ final readonly class ChunkSequenceAnalyzer
             length: $chunkLength,
         );
 
-        return $previous !== null
-            && $first - $previous === $step;
+        return $first - $previous === $step;
     }
 }
