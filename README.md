@@ -2,6 +2,7 @@
 
 [![Coverage: 100%](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/jacyimp/memorable-otp/actions/workflows/ci.yml)
 [![MSI: 100%](https://img.shields.io/badge/MSI-100%25-brightgreen)](https://github.com/jacyimp/memorable-otp/actions/workflows/ci.yml)
+[![PHPStan: max](https://img.shields.io/badge/PHPStan-max-brightgreen)](https://github.com/jacyimp/memorable-otp/actions/workflows/ci.yml)
 
 Human-friendly numeric verification codes for PHP, while keeping as many possible codes as practical.
 
